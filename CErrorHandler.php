@@ -36,6 +36,15 @@ class CErrorHandler {
 
     public function emailError() {
         if (empty($this->errorMessages)) {
+            $e = error_get_last();
+            if(!empty($e)){
+                $echo = implode('|', $e);
+                $this->addErrorMessage($echo);
+            }else{
+                return;
+            }
+        }
+        if (empty($this->errorMessages)) {
             return;
         }
         $echo = '<div>' . implode('</div><div>', $this->errorMessages) . '</div>';
