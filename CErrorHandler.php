@@ -64,7 +64,7 @@ class CErrorHandler {
         $trace = '';
         foreach ($e->getTrace() as $k => $v) {
             $s = $k % 2 ? 'background-color:rgb(185,248,172);' : 'background-color:rgb(240,240,240);';
-            $trace .= '<span style="' . $s . '"><span style="background-color:rgb(255,165,107);">#' . $k . '</span> ' . $v['file'] . '(' . $v['line'] . '):' . $v['class'] . '::' . $v['function'] . '(' . json_encode($v['args']) . ')</span><br />';
+            $trace .= '<span style="' . $s . '"><span style="background-color:rgb(255,165,107);">#' . $k . '</span> ' . (isset($v['file']) ? $v['file'] : 'unknow file') . '(' . (isset($v['line']) ? $v['line'] : 'unknow line') . '):' . (isset($v['class']) ? $v['class'] : 'unknow class') . '::' . (isset($v['function']) ? $v['function'] : 'unknow function') . '(' . (isset($v['args']) ? json_encode($v['args']) : 'unknow args') . ')</span><br />';
         }
 
         $a = '';
