@@ -1,0 +1,46 @@
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <?php echo $this->isNewRecord ? '创建' : '修改'; ?>定时任务
+            <a style="float: right;" href="/cron/index" target="_blank" title="定时任务管理"><span class="glyphicon glyphicon-list-alt"></span></a>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+
+                <form class="form-horizontal" role="form" method="post">
+                    <div class="form-group row">
+                        <label class="col-sm-1 control-label" for="formGroupInputSmall">任务名称</label>
+                        <div class="col-xs-2">
+                            <input type="text" name="cron[task]" value="<?php echo isset($this->data['task']) ? $this->data['task'] : '' ?>" class="form-control" placeholder="任务名称">
+                        </div>
+                        <label class="col-sm-1 control-label" for="formGroupInputSmall">时间</label>
+                        <div class="col-xs-3">
+                            <input type="text" name="cron[mhdmd]" value="<?php echo isset($this->data['mhdmd']) ? $this->data['mhdmd'] : '' ?>" class="form-control" placeholder="时间 (*/1 * * * *)">
+                        </div>
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">超时时间（分钟）</label>
+                        <div class="col-xs-2">
+                            <input type="text" name="cron[timeout]" value="<?php echo isset($this->data['timeout']) ? $this->data['timeout'] : '' ?>" class="form-control" placeholder="超时时间（分钟）">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-1 control-label" for="formGroupInputSmall">命令</label>
+                        <div class="col-xs-6">
+                            <input type="text" name="cron[command]" value="<?php echo isset($this->data['command']) ? $this->data['command'] : '' ?>" class="form-control" placeholder="命令">
+                        </div>
+                        <label class="col-sm-2 control-label" for="formGroupInputSmall">>>日志文件</label>
+                        <div class="col-xs-2">
+                            <input type="text" name="cron[logFile]" value="<?php echo isset($this->data['logFile']) ? $this->data['logFile'] : '' ?>" class="form-control" placeholder="日志文件">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-xs-2">
+                            <input type="submit" class="form-control btn btn-success" value="<?php echo $this->isNewRecord ? '创建' : '修改'; ?>">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
