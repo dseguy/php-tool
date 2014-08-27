@@ -11,6 +11,15 @@
     <li>
         <a href="https://github.com/wedv/php-tool/tree/master/interface_test">接口数据测试管理 1.0</a>
     </li>
+    <li>
+        <a href="https://github.com/wedv/php-tool/blob/master/ApkParser.php">apk文件信息解析类</a>
+    </li>
+    <li>
+        <a href="https://github.com/wedv/php-tool/blob/master/CErrorHandler.php">自定义错误处理类</a>
+    </li>
+    <li>
+        <a href="https://github.com/wedv/php-tool/blob/master/CronEntry.php">定时任务时间解析类</a>
+    </li>
 </ul>
 
 
