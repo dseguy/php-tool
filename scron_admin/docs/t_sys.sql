@@ -17,6 +17,5 @@ CREATE TABLE `sys_cron` (
 -- ----------------------------
 -- 初始数据
 -- ----------------------------
-/**
-INSERT INTO `sys_cron` VALUES(1, 'kill pid (守护进程)', 1, '*/1 * * * *', 'php path/cmd.php pclose d', '', '', '');
-**/
+
+-- INSERT INTO `sys_cron` VALUES(1, 'kill pid (守护进程)', 1, '*/1 * * * *', 'php path/cmd.php pclose d', '', '', '');
