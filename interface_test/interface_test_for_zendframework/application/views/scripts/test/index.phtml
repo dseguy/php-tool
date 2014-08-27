@@ -1,0 +1,122 @@
+<div class="container">
+<?php
+    $interFaces = $this->interFaces;
+?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            接口管理
+        </div>
+        <div class="panel-body">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <?php foreach($interFaces as $i => $interFace){ ?>
+                    <li class="dropdown <?php echo $i==0 ? 'active' : ''; ?>">
+                        <?php if(isset($interFace['items'][0]['id'])){ ?>
+                        <a href="#" id="<?php echo $interFace['id']; ?>" data-toggle="dropdown" class="dropdown-toggle"><?php echo $interFace['label']; ?><span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+                            <?php foreach($interFace['items'] as $j => $subitem){ ?>
+                                <li><a href="#<?php echo $subitem['id']; ?>" role="tab" data-toggle="tab"><?php echo $subitem['label']; ?></a></li>
+                            <?php } ?>
+                        </ul>
+                        <?php }else{ ?>
+                        <a href="#<?php echo $interFace['id']; ?>" role="tab" data-toggle="tab"><?php echo $interFace['label']; ?></a>
+                        <?php } ?>
+                    </li>
+                    <?php } ?>
+                </ul>
+                <div id="interface_content" style="position: relative;width:100%;height:300px;">
+                    <!--遮罩层-->
+                    <div id="middle_p" style="display: none;z-index: 2;position: absolute;width: 100%;height:300px;background-color: rgba(99,99,99,0.9);">
+                        <span style="font-size:26px;cursor: pointer;width:30px;heigh:30px;float: right;" onclick="close_prompt();">x</span>
+                    </div>
+                    <style>
+                        #api_link li {margin-top:5px;padding-bottom: 5px;border-bottom: 1px dashed red;}
+                        #api_link input {width:180px;}
+                    </style>
+                    <div class="navbar-example" style="float: left;width: 22%;height:300px;border:1px red dashed;overflow-y:auto;text-wrap: inherit;">
+
+                        <ul id="api_link" class="list-unstyled tab-content">
+                            <?php foreach($interFaces as $i => $interFace){ ?>
+                                <?php if(isset($interFace['items'][0]['id'])){ ?>
+                            <?php foreach($interFace['items'] as $j => $subitem){ ?>
+                            <div class="tab-pane <?php echo $i==0 ? 'active in' : ''; ?> fade" id="<?php echo $subitem['id']; ?>">
+                                <?php foreach($subitem['items'] as $item){ ?>
+                                <li>
+                                    <a href="<?php echo $item['url']; ?>" target="_blank"><?php echo $item['label']; ?></a>
+                                    <input class="form-control input-sm" placeholder=".input-sm" type="text" value='<?php echo $item['data']; ?>'>
+                                </li>
+                                <?php } ?>
+                            </div>
+                            <?php } ?>
+                                <?php }else{ ?>
+                            <div class="tab-pane <?php echo $i==0 ? 'active in' : ''; ?> fade" id="<?php echo $interFace['id']; ?>">
+                                <?php foreach($interFace['items'] as $item){ ?>
+                                <li>
+                                    <a href="<?php echo $item['url']; ?>" target="_blank"><?php echo $item['label']; ?></a>
+                                    <input class="form-control input-sm" placeholder=".input-sm" type="text" value='<?php echo $item['data']; ?>'>
+                                </li>
+                                <?php } ?>
+                            </div>
+                                <?php } ?>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                    <div id="ajax_response" style="float: left;width: 78%;height:300px;border:1px dashed red;border-left: none;overflow-y:auto;text-wrap: inherit;">
+                        接口返回数据
+                    </div>
+                    <div id="input_prompt_div" style="display: none;z-index: 3;position: absolute;left: 43px; top: 30px;width: 880px;height:250px;overflow-y:auto;text-wrap: inherit;">
+                        <textarea id="input_prompt" style="width:877px;height:247px;"></textarea>
+                    </div>
+                    <script>
+                        function ajaxLinkClick(obj) {
+                            $('#ajax_response').html('');
+                            var $this = $(obj);
+                            var $li = $this.parent('li');
+                            var $s = $li.children('input').val();
+                            eval('var $d=' + $s);
+                            $.ajax({
+                                url: $this.attr('href'),
+                                data: $d,
+                                dataType: 'json',
+                                type: 'post',
+                                success: function(data) {
+                                    $(".ajax_page").remove();
+                                    $('#ajax_response').html(JSON.stringify(data)).show();
+                                    var $totalPage = data.totalPage;
+                                    if ($totalPage > 1) {
+                                        for (var i = 0; i < $totalPage; i++) {
+                                            var $str = '<a onclick="ajaxLinkClick(this);return false;" class="ajax_page" href=' + $this.attr('href') + '&page=' + (i + 1) + '>';
+                                            $str += '[' + (i + 1) + ']';
+                                            $str += '</a>';
+                                            $($str).appendTo($li);
+                                        }
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+                        var $click_input = '';
+                        function bind_ajax_click() {
+                            $('#api_link a').bind('click', function() {
+                                ajaxLinkClick(this);
+                                return false;
+                            });
+                            $('#api_link input').attr('title', '双击输入框放大');
+                            $('#api_link input').bind('dblclick', function() {
+                                $click_input = $(this);
+                                $('#middle_p').show();
+                                $('#input_prompt_div').show();
+                                $('#input_prompt').val($(this).val());
+                            });
+                        }
+                        function close_prompt() {
+                            $('#middle_p').hide();
+                            $('#input_prompt_div').hide();
+                            $click_input.val($('#input_prompt').val());
+                        }
+                        bind_ajax_click();
+                    </script>
+                </div>
+        </div>
+    </div>
+</div>
