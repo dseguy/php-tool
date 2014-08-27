@@ -5,14 +5,14 @@
     定时任务管理界面
 </p>
 <p>
-    <img title="定时任务管理界面" src="https://raw.githubusercontent.com/wedv/php-tool/master/scron_admin/res/scron_admin_1.png" alt="scron_admin_1.png" style="max-width:100%" />
+    <a href="javascript:;"><img title="定时任务管理界面" src="https://raw.githubusercontent.com/wedv/php-tool/master/scron_admin/res/scron_admin_1.png" alt="scron_admin_1.png" style="max-width:100%" /></a>
 </p>
 
 <p>
     正在运行的任务
 </p>
 <p>
-    <img title="正在运行的任务" src="https://raw.githubusercontent.com/wedv/php-tool/master/scron_admin/res/scron_ps_list_1.png" alt="scron_ps_list_1.png" style="max-width:100%" />
+    <a href="javascript:;"><img title="正在运行的任务" src="https://raw.githubusercontent.com/wedv/php-tool/master/scron_admin/res/scron_ps_list_1.png" alt="scron_ps_list_1.png" style="max-width:100%" /></a>
 </p>
 
 <h2>
