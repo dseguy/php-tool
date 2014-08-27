@@ -14,5 +14,7 @@
 </h2>
 <p>
     controller: TestController.php
+</p>
+<p>
     view: test/index.phtml
 </p>
