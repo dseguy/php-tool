@@ -20,6 +20,9 @@
     <li>
         <a href="https://github.com/wedv/php-tool/blob/master/CronEntry.php">定时任务时间解析类</a>
     </li>
+    <li>
+        <a href="https://github.com/wedv/php-tool/tree/master/PHP%20WebSockets">PHP WebSockets</a>
+    </li>
 </ul>
 
 

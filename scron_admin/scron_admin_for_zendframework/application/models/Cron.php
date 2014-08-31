@@ -9,7 +9,12 @@ class Model_Cron extends Model_Abstract{
     public static $logExtName = '.log';
     public static $cronCacheKey = 'sys:cron';
     public static $pcloseCronCacheKey = 'sys:cron_pclose';
-
+    
+    /**
+     * Returns the static model of the specified AR class.
+     * @param type $className
+     * @return Model_Cron the static model class
+     */
     public static function model($className = __CLASS__) {
         $model = null;
         if (isset(self::$_models[$className]))
