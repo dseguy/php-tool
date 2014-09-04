@@ -176,6 +176,7 @@ class Model_Cron extends Model_Abstract{
                         $res['inPcloseSets'] = 1;
                     }
                     $res['pid'] = $res[2];
+                    $res['cmd'] = $res[8];
                     $m[] = $res;
                 }
             }
@@ -192,6 +193,7 @@ class Model_Cron extends Model_Abstract{
                         $res['inPcloseSets'] = 1;
                     }
                     $res['pid'] = $res[1];
+                    $res['cmd'] = '';
                     $m[] = $res;
                 }
             }
