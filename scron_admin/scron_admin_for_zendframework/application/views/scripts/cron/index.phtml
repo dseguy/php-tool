@@ -118,7 +118,7 @@
         if ($.isArray($list) && !$.isEmptyObject($list)) {
             var tbody = '';
             $.each($list, function(i, item){
-                tbody += '<tr class="' + (i % 2 == 0 ? 'odd' : 'even') + '">';
+                tbody += '<tr class="' + (i % 2 == 0 ? 'odd' : 'even') + '" title="' + item.title + '">';
                 var i=0;
                 var pid;
                 var $inPcloseSets=0;
