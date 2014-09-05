@@ -134,7 +134,7 @@ class Model_Common {
      */
     public static function sendMail($sendto, $subject, $content) {
         try {
-            $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', 'staging');
+            $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
             $mailTransport = new Zend_Mail_Transport_Smtp($config->You->settings->mail->smtp, array('auth' => 'login',
                 'username' => $config->You->settings->mail->account,
                 'password' => $config->You->settings->mail->password));
