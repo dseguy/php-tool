@@ -52,8 +52,27 @@ class dController extends commandController{
             if($cron['active'] != 1){   //判断状态
                 continue;
             }
-            if($cron['timeout'] > 0 && (time() - $cron['runAt'] > $cron['timeout'])){
+            if($cron['timeout'] > 0 && (time() - $cron['runAt'] > ($cron['timeout']*58))){
+                $ps = $modelCron->getProcess();
+                $isRun = 0;
+                $pid = 0;
+                foreach ($ps as $ips) {
+                    if($cron['command'] == $ips['cmd']){
+                        $isRun = 1;
+                        $pid = $ips['pid'];
+                        break;
+                    }
+                }
                 //超时处理
+                if($isRun && $pid){
+                    $text = date('Y-m-d H:i:s').'|脚本执行超时<hr/>';
+                    $text .= json_encode($cron);
+                    foreach (CErrorHandler::instance()->emails as $email) {
+                        Model_Common::sendMail($email, CErrorHandler::instance()->emailSubTitle, $text);
+                    }
+                    //结束进程
+                    Model_Cron::model()->lpushAPclosePid($pid);
+                }
             }
             $cronTime = $cron['mhdmd'];
             if (You_Application_Utils_CronEntry::timeOk(trim($cronTime))) {
