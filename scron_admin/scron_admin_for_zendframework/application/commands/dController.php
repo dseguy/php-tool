@@ -99,7 +99,7 @@ class dController extends commandController{
                     foreach ($process as $item) {
                         if ($pid == $item[2]) {
                             Model_Cron::model()->pclose($pid);
-                            echo "\n" . 'exec -- ' . "pclose($pid)" . (isset($item[8]) ? "[$item[8]]" : '');
+                            echo "\n" . 'exec -- ' . "pclose($pid)" . (isset($item[8]) ? "[$item[8]]" : '') . '[' . date('Y-m-d') . ']';
                         }
                     }
                 }
