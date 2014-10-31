@@ -38,11 +38,16 @@ class CronController extends Zend_Controller_Action {
         $this->view->headTitle('定时任务管理', Zend_View_Helper_Placeholder_Container_Abstract::PREPEND);
         $modelCron = Model_Cron::model();
         $crons = $modelCron->getCronsFromCache();
+        $cmdList = [];
         foreach ($crons as $k => $v) {
             $crons[$k]['runAt'] = $v['runAt']>0 ? date('Y-m-d H:i:s', $v['runAt']) : '--';
             $crons[$k]['logFile'] = $modelCron->getLogFile($v);
+            $cmdList[$v['command']] = $v['task'];
         }
         $m = Model_Cron::model()->getProcess();
+        foreach ($m as $k => $item) {
+            $m[$k]['title'] = isset($cmdList[$item['cmd']]) ? $cmdList[$item['cmd']] : '';
+        }
         $this->view->ps = json_encode($m);
         $this->view->crons = json_encode($crons);
         $this->view->logDir = 'commandlog/' . Model_Cron::$logDir;
