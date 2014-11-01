@@ -118,7 +118,9 @@ jQuery.lxb = function(){
                 $('#s_time').html(t);
 //                app.setStop();
                 $.get('http://liuxos3.duapp.com/wx/rrd.php?c=' + $c);
-                $('#chatAudio')[0].play();
+                for(var i=0; i<=($c/10); i++){
+                    $('#chatAudio')[0].play();
+                }
                 $fs = 20000;
                 DN.Notify(DN.rrdIcon, "债券数量", '债券数量：' + $c);
                 app.renderList($c, 10);
