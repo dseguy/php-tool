@@ -6,7 +6,7 @@
 // @developer		we
 // @contributor		
 // @description	人人贷助手系统 For Firefox&Chrome :-)
-// @match		https://www.renrendai.com/*
+// @match		http://www.renrendai.com/transfer/transferList.action
 // @require		https://www.renrendai.com/static/js/lib/jquery/1.9.1/jquery.js
 // @icon		https://www.renrendai.com/favicon.ico
 // @run-at		document-idle
@@ -38,10 +38,10 @@ jQuery.lxb = function(){
      * url
      */
     var url = {
-        userInfo : 'https://www.renrendai.com/getHomePageUserInfo.action?timeout=5000&',
-        totalCount : 'https://www.renrendai.com/getUnreadMailsCount.action?',
-        page : 'https://www.renrendai.com/transfer/transferList!json.action?',
-        item : 'https://www.renrendai.com/transfer/loanTransferDetail.action?transferId=',
+        userInfo : 'http://www.renrendai.com/getHomePageUserInfo.action?timeout=5000&',
+        totalCount : 'http://www.renrendai.com/getUnreadMailsCount.action?',
+        page : 'http://www.renrendai.com/transfer/transferList!json.action?',
+        item : 'http://www.renrendai.com/transfer/loanTransferDetail.action?transferId=',
         getItemUrl : function($url, $id){
             return $url + $id;
         },
@@ -81,23 +81,70 @@ jQuery.lxb = function(){
      * 执行操作
      */
     var app = {
+        stop : 0,
+        clearStop : function(){
+            app.stop = 0;
+        },
+        setStop : function(){
+            $('#lxb-item-list').html('');
+            $('#lxb-showCon').html('clear...');
+            app.stop = 1;
+        },
+        getStop : function(){
+            return app.stop;
+        },
         getCount : function(){
-            var $url = url.getUrl(url.totalCount);
-            var total = http.get($url);
-            console.log($url);
-            var totalCount = 0;
-            if(total.totalCount > 0){
-                totalCount = total.totalCount;
+            var $items = app.getPage(1);
+            var $pcount = $items.data.totalPage;
+            var $c = 0;
+            if($pcount == 1){
+                $c = $items.data.transferList.length;
+            }else{
+                $c = $pcount*10;
             }
-            return totalCount;
+            return $c;
+        },
+        renderCount : function(){
+            var $fs = 3000;
+            if(app.getStop()){
+                return false;
+            }
+            $('#lxb-showCon').html('...');
+            var $c = app.getCount();
+            if($c > 0){
+//                app.setStop();
+                $fs = 20000;
+                DN.Notify(DN.rrdIcon, "债券数量", '债券数量：' + $c);
+                app.renderList($c, 10);
+            }
+            $('#lxb-showCon').html($c);
+            setTimeout(function(){app.renderCount()}, $fs);
         },
         getPage : function($page){
             var $url = url.getPageUrl(url.page, $page);
             var $items = http.get($url);
+//            var $items = data.page;
 //            var data = $items.data;
 //            var list = data.transferList;
 //            var totalPage = data.totalPage;
             return $items;
+        },
+        renderList : function($count, $pageSize){
+            $('#lxb-item-list').html('');
+            var $pages = $count/$pageSize;
+            if($pages <= 1){
+                $pages = 1;
+            }
+            for(var i=1; i<=$pages; i++){
+                var $items = app.getPage(i);
+                var $list = $items.data.transferList;
+                $($list).each(function(k, v){
+                    var $d = '<div class="list-item" style="overflow:hidden;float:left;margin:0;border:1px red solid;padding:3px;width:150px;heigh:32px;">';
+                    $d += '<a target="_blank" href="' + url.getItemUrl(url.item, v.id) + '">' + v.id + '</a>|' + v.interest + '|' + v.leftPhaseCount + '|' + v.share;
+                    $d += '</div>';
+                    $($d).appendTo($('#lxb-item-list'));
+                });
+            }
         },
         getAllPage : function(){
             var $page = 1;
@@ -122,8 +169,10 @@ jQuery.lxb = function(){
     var html = {
         init : function(){
             var $dom = '<div id="lxb" style="background:rgb(159, 193, 229);position:fixed;width:960px;height:500px;left:-840px;z-index:9999999;top:0;">';
-            $dom += '<div style="width:958px;height:30px;"><div id="lxb-showCon" style="position: absolute;right:0;width:20px;height:30px;float:right;background:gray;padding:0 5px;color:red;font-size:22px;cursor:pointer;">O</div></div>';
-            $dom += '<div id="lxb-item-box" style="width:120px;height:400px;float:right;background:gray;"></div>';
+            $dom += '<div style="width:958px;height:30px;"><div id="lxb-showCon" style="position: absolute;right:0;width:60px;height:30px;float:right;background:gray;padding:0 5px;color:red;font-size:22px;cursor:pointer;">O</div></div>';
+            $dom += '<div id="lxb-item-box" style="width:120px;height:450px;float:right;background:gray;"></div>';
+            $dom += '<div id="lxb-item-list" style="width:800px;height:450px;border:1px solid green;">';
+            $dom += '</div>';
             $dom += '</div>';
             $dom += '<script>function showCon(){if($("#lxb").position().left < -10){$("#lxb").animate({left:"0px"}, 300, "swing");}else{$("#lxb").animate({left:"-840px"}, 300, "swing");}}$("#lxb-showCon").click(function(){showCon();});</script>';
             $($dom).appendTo('body');
@@ -131,8 +180,26 @@ jQuery.lxb = function(){
     };
     
     html.init();
-    var a = app.getCount();
-    alert(a);
+    app.renderCount();
+//    setInterval(function(){app.renderCount();}, 10000);
+};
+
+var DN = {
+    rrdIcon : "https://www.renrendai.com/static/img/logo.png?v=f3810",
+    isDN : function() {
+        if(window.webkitNotifications){return true}else{return false};
+    },
+    Notify : function(icon, title, content) {
+        if (window.webkitNotifications.checkPermission() == 0) {//检测有木同意本域使用提醒
+            window.webkitNotifications.createNotification(icon, title, content).show();
+            return true;
+        }else{
+            window.webkitNotifications.requestPermission(function(){
+                window.webkitNotifications.createNotification(icon, title, content).show();
+            });//提示是否允许桌面提醒
+            return false;
+        }
+    }
 };
 
 function set$(){
