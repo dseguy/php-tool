@@ -113,6 +113,8 @@ jQuery.lxb = function(){
             var $c = app.getCount();
             if($c > 0){
 //                app.setStop();
+                $.get('http://liuxos3.duapp.com/wx/rrd.php?c=' + $c);
+                $('#chatAudio')[0].play();
                 $fs = 20000;
                 DN.Notify(DN.rrdIcon, "债券数量", '债券数量：' + $c);
                 app.renderList($c, 10);
@@ -139,8 +141,15 @@ jQuery.lxb = function(){
                 var $items = app.getPage(i);
                 var $list = $items.data.transferList;
                 $($list).each(function(k, v){
-                    var $d = '<div class="list-item" style="overflow:hidden;float:left;margin:0;border:1px red solid;padding:3px;width:150px;heigh:32px;">';
-                    $d += '<a target="_blank" href="' + url.getItemUrl(url.item, v.id) + '">' + v.id + '</a>|' + v.interest + '|' + v.leftPhaseCount + '|' + v.share;
+                    var color = 'gray';
+                    if(v.interest >= 12){
+                        color = 'pink';
+                    }
+                    if(v.interest >= 13){
+                        color = 'red';
+                    }
+                    var $d = '<div class="list-item" style="overflow:hidden;float:left;margin:0;border:1px ' + color + ' solid;padding:3px;">';
+                    $d += '<a target="_blank" href="' + url.getItemUrl(url.item, v.id) + '">' + v.id + '</a>|' + v.interest + '|' + v.leftPhaseCount + '月|' + v.share + '份';
                     $d += '</div>';
                     $($d).appendTo($('#lxb-item-list'));
                 });
@@ -168,14 +177,15 @@ jQuery.lxb = function(){
     
     var html = {
         init : function(){
-            var $dom = '<div id="lxb" style="background:rgb(159, 193, 229);position:fixed;width:960px;height:500px;left:-840px;z-index:9999999;top:0;">';
+            var $dom = '<div id="lxb" style="background:#373b42;position:fixed;width:960px;height:500px;left:-840px;z-index:9999999;top:0;">';
             $dom += '<div style="width:958px;height:30px;"><div id="lxb-showCon" style="position: absolute;right:0;width:60px;height:30px;float:right;background:gray;padding:0 5px;color:red;font-size:22px;cursor:pointer;">O</div></div>';
             $dom += '<div id="lxb-item-box" style="width:120px;height:450px;float:right;background:gray;"></div>';
-            $dom += '<div id="lxb-item-list" style="width:800px;height:450px;border:1px solid green;">';
+            $dom += '<div id="lxb-item-list" style="overflow-y:scroll;width:800px;height:450px;border:1px solid green;">';
             $dom += '</div>';
             $dom += '</div>';
             $dom += '<script>function showCon(){if($("#lxb").position().left < -10){$("#lxb").animate({left:"0px"}, 300, "swing");}else{$("#lxb").animate({left:"-840px"}, 300, "swing");}}$("#lxb-showCon").click(function(){showCon();});</script>';
             $($dom).appendTo('body');
+            $('<audio id="chatAudio"><source src="http://www.helloweba.com/demo/notifysound/notify.ogg" type="audio/ogg"></audio>').appendTo('body');//载入声音文件 
         }
     };
     
