@@ -122,7 +122,8 @@ jQuery.lxb = function(){
 //                app.setStop();
                 $.ajax({
                     url : 'http://liuxos3.duapp.com/wx/rrd.php?c=' + $c,
-                    dataType : 'jsonp'
+                    dataType : 'jsonp',
+                    success : function(data){}
                 });
 //                $.get('http://liuxos3.duapp.com/wx/rrd.php?c=' + $c);
                 for(var i=0; i<=($c/10); i++){
