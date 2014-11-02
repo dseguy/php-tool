@@ -120,7 +120,11 @@ jQuery.lxb = function(){
                 t += D.getHours() + ':' + D.getMinutes() + ':' + D.getSeconds();
                 $('#s_time').html(t);
 //                app.setStop();
-                $.get('http://liuxos3.duapp.com/wx/rrd.php?c=' + $c);
+                $.ajax({
+                    url : 'http://liuxos3.duapp.com/wx/rrd.php?c=' + $c,
+                    dataType : 'jsonp'
+                });
+//                $.get('http://liuxos3.duapp.com/wx/rrd.php?c=' + $c);
                 for(var i=0; i<=($c/10); i++){
                     $('#chatAudio')[0].play();
                 }
@@ -148,6 +152,9 @@ jQuery.lxb = function(){
             }
             for(var i=1; i<=$pages; i++){
                 var $items = app.getPage(i);
+                if(!$items){
+                    continue;
+                }
                 var $list = $items.data.transferList;
                 $($list).each(function(k, v){
                     var color = 'gray';
@@ -195,6 +202,11 @@ jQuery.lxb = function(){
             $dom += '</div>';
             $dom += '<div id="lxb-item-list" style="overflow-y:auto;width:828px;height:467px;border:1px solid red;">';
             $dom += '</div>';
+            $dom += '<form action="http://www.test.com/io.php" method="POST" enctype="multipart/form-data" target="upload">';
+            $dom += '<input type="file" name="upload_file" />';
+            $dom += '<input type="submit" value="开始上传" />';
+            $dom += '</form>';
+            $dom += '<iframe name="upload" style="display:none"></iframe>';
             $dom += '</div>';
             $dom += '<script>function showCon(){if($("#lxb").position().left < -10){$("#lxb").animate({left:"0px"}, 300, "swing");}else{$("#lxb").animate({left:"-830px"}, 300, "swing");}}$("#lxb-showCon").click(function(){showCon();});$("#lxb-item-box").click(function(){showCon();});</script>';
             $($dom).appendTo('body');
