@@ -228,13 +228,21 @@ var DN = {
     },
     Notify : function(icon, title, content) {
         if (window.webkitNotifications.checkPermission() == 0) {//检测有木同意本域使用提醒
-            DN.ontis.close();
+            try{
+                DN.ontis.close();
+            }catch(e){
+                console.log(e);
+            }
             DN.ontis = window.webkitNotifications.createNotification(icon, title, content);
             DN.ontis.show();
             return true;
         }else{
             window.webkitNotifications.requestPermission(function(){
-                DN.ontis.close();
+                try{
+                    DN.ontis.close();
+                }catch(e){
+                    console.log(e);
+                }
                 DN.ontis = window.webkitNotifications.createNotification(icon, title, content);
                 DN.ontis.show();
             });//提示是否允许桌面提醒
