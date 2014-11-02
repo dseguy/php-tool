@@ -95,6 +95,9 @@ jQuery.lxb = function(){
         },
         getCount : function(){
             var $items = app.getPage(1);
+            if(!$items){
+                return 0;
+            }
             var $pcount = $items.data.totalPage;
             var $c = 0;
             if($pcount == 1){
