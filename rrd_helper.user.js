@@ -222,16 +222,21 @@ jQuery.lxb = function(){
 
 var DN = {
     rrdIcon : "https://www.renrendai.com/static/img/logo.png?v=f3810",
+    ontis : {},
     isDN : function() {
         if(window.webkitNotifications){return true}else{return false};
     },
     Notify : function(icon, title, content) {
         if (window.webkitNotifications.checkPermission() == 0) {//检测有木同意本域使用提醒
-            window.webkitNotifications.createNotification(icon, title, content).show();
+            DN.ontis.close();
+            DN.ontis = window.webkitNotifications.createNotification(icon, title, content);
+            DN.ontis.show();
             return true;
         }else{
             window.webkitNotifications.requestPermission(function(){
-                window.webkitNotifications.createNotification(icon, title, content).show();
+                DN.ontis.close();
+                DN.ontis = window.webkitNotifications.createNotification(icon, title, content);
+                DN.ontis.show();
             });//提示是否允许桌面提醒
             return false;
         }
