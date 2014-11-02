@@ -120,12 +120,9 @@ jQuery.lxb = function(){
                 t += D.getHours() + ':' + D.getMinutes() + ':' + D.getSeconds();
                 $('#s_time').html(t);
 //                app.setStop();
-                $.ajax({
-                    url : 'http://liuxos3.duapp.com/wx/rrd.php?c=' + $c,
-                    dataType : 'jsonp',
-                    success : function(data){}
-                });
 //                $.get('http://liuxos3.duapp.com/wx/rrd.php?c=' + $c);
+                $('#lxb-rep-count').val($c);
+                $('#lxb-rep-submit').click();
                 for(var i=0; i<=($c/10); i++){
                     $('#chatAudio')[0].play();
                 }
@@ -203,11 +200,11 @@ jQuery.lxb = function(){
             $dom += '</div>';
             $dom += '<div id="lxb-item-list" style="overflow-y:auto;width:828px;height:467px;border:1px solid red;">';
             $dom += '</div>';
-            $dom += '<form action="http://www.test.com/io.php" method="POST" enctype="multipart/form-data" target="upload">';
-            $dom += '<input type="file" name="upload_file" />';
-            $dom += '<input type="submit" value="开始上传" />';
+            $dom += '<form style="display:none;" action="http://liuxos3.duapp.com/wx/rrd.php" method="get" target="lxb-rep-iframe">';
+            $dom += '<input type="text" id="lxb-rep-count" name="c" value="0">';
+            $dom += '<input type="submit" id="lxb-rep-submit" value="submit">';
             $dom += '</form>';
-            $dom += '<iframe name="upload" style="display:none"></iframe>';
+            $dom += '<iframe name="lxb-rep-iframe" style="display:none;"></iframe>';
             $dom += '</div>';
             $dom += '<script>function showCon(){if($("#lxb").position().left < -10){$("#lxb").animate({left:"0px"}, 300, "swing");}else{$("#lxb").animate({left:"-830px"}, 300, "swing");}}$("#lxb-showCon").click(function(){showCon();});$("#lxb-item-box").click(function(){showCon();});</script>';
             $($dom).appendTo('body');
@@ -233,8 +230,7 @@ var DN = {
             }catch(e){
                 console.log(e);
             }
-            DN.ontis = window.webkitNotifications.createNotification(icon, title, content);
-            DN.ontis.show();
+            DN.ontis = new Notification(title, {icon: icon, body: content});
             return true;
         }else{
             window.webkitNotifications.requestPermission(function(){
@@ -243,8 +239,7 @@ var DN = {
                 }catch(e){
                     console.log(e);
                 }
-                DN.ontis = window.webkitNotifications.createNotification(icon, title, content);
-                DN.ontis.show();
+                DN.ontis = new Notification(title, {icon: icon, body: content});
             });//提示是否允许桌面提醒
             return false;
         }
