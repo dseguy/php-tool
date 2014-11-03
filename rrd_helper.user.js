@@ -10,7 +10,7 @@
 // @require		https://www.renrendai.com/static/js/lib/jquery/1.9.1/jquery.js
 // @icon		https://www.renrendai.com/favicon.ico
 // @run-at		document-idle
-// @version 		1003
+// @version 		1004
 // @updateURL		file:///D:/wamp/www/_zdtone/gmbingxue/ManageWeixin/public/rrd_helper.user.js
 // @supportURL		http://www.baidu.com/
 // @homepage		file:///D:/wamp/www/_zdtone/gmbingxue/ManageWeixin/public/rrd_helper.user.js
@@ -224,25 +224,26 @@ var DN = {
         if(window.webkitNotifications){return true}else{return false};
     },
     Notify : function(icon, title, content) {
-        if (window.webkitNotifications.checkPermission() == 0) {//检测有木同意本域使用提醒
+//        if (window.webkitNotifications.checkPermission() == 0) {//检测有木同意本域使用提醒
             try{
                 DN.ontis.close();
             }catch(e){
                 console.log(e);
             }
+            
             DN.ontis = new Notification(title, {icon: icon, body: content});
             return true;
-        }else{
-            window.webkitNotifications.requestPermission(function(){
-                try{
-                    DN.ontis.close();
-                }catch(e){
-                    console.log(e);
-                }
-                DN.ontis = new Notification(title, {icon: icon, body: content});
-            });//提示是否允许桌面提醒
-            return false;
-        }
+//        }else{
+//            window.webkitNotifications.requestPermission(function(){
+//                try{
+//                    DN.ontis.close();
+//                }catch(e){
+//                    console.log(e);
+//                }
+//                DN.ontis = new Notification(title, {icon: icon, body: content});
+//            });//提示是否允许桌面提醒
+//            return false;
+//        }
     }
 };
 
