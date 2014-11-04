@@ -192,7 +192,10 @@ jQuery.lxb = function(){
     var html = {
         init : function(){
             var $dom = '<div id="lxb" style="border:1px double red;background:#373b42;position:fixed;width:960px;height:500px;left:-830px;z-index:9999999;top:0;">';
-            $dom += '<div id="lxb-title" style="width:958px;height:30px;border-bottom:1px solid red;"><div id="s_time" style="color:red;"></div><div id="lxb-showCon" style="border-left:1px solid red;position: absolute;right:0;top:0;width:120px;height:30px;float:right;padding:0 5px;color:red;font-size:22px;cursor:pointer;">O</div></div>';
+            $dom += '<div id="lxb-title" style="width:958px;height:30px;border-bottom:1px solid red;"><div id="s_time" style="color:red;"></div>';
+            $dom += '<div style="float:right;margin-right:140px;border:1px solid gray;line-height:28px;"><input type="checkbox" id="lxb-open-notify">开启桌面通知</div>';
+            $dom += '<div id="lxb-showCon" style="border-left:1px solid red;position: absolute;right:0;top:0;width:120px;height:30px;float:right;padding:0 5px;color:red;font-size:22px;cursor:pointer;">O</div>';
+            $dom += '</div>';
             $dom += '<div id="lxb-item-box" style="cursor:pointer;width:130px;height:468px;float:right;background:gray;">';
             $dom += '<img style="width:118px;" src="https://www.renrendai.com/static/img/logo.png?v=f3810" />';
             $dom += '<p style="font-size:45px;margin:auto;padding:15px 0px 15px 40px;">人<br>人<br>贷<br>助<br>手<br></p>';
@@ -207,6 +210,7 @@ jQuery.lxb = function(){
             $dom += '<iframe name="lxb-rep-iframe" style="display:none;"></iframe>';
             $dom += '</div>';
             $dom += '<script>function showCon(){if($("#lxb").position().left < -10){$("#lxb").animate({left:"0px"}, 300, "swing");}else{$("#lxb").animate({left:"-830px"}, 300, "swing");}}$("#lxb-showCon").click(function(){showCon();});$("#lxb-item-box").click(function(){showCon();});</script>';
+            $dom += '<script>function RequestPermission(callback){window.Notification.requestPermission(callback);}$("#lxb-open-notify").click(function(){RequestPermission(function(){if (window.Notification.permission === "granted"){$("#lxb-open-notify").attr("checked", "true");}else{$("#lxb-open-notify").removeAttr("checked");}});});$("#lxb-open-notify").click();</script>';
             $($dom).appendTo('body');
             $('<audio id="chatAudio"><source src="http://www.helloweba.com/demo/notifysound/notify.ogg" type="audio/ogg"></audio>').appendTo('body');//载入声音文件 
         }
@@ -220,6 +224,9 @@ jQuery.lxb = function(){
 var DN = {
     rrdIcon : "https://www.renrendai.com/static/img/logo.png?v=f3810",
     ontis : {},
+    RequestPermission : function(callback) {
+        if(window.webkitNotifications){return true}else{return false};
+    },
     isDN : function() {
         if(window.webkitNotifications){return true}else{return false};
     },
