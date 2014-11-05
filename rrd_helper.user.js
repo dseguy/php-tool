@@ -12,9 +12,9 @@
 // @icon		http://www.renrendai.com/favicon.ico
 // @run-at		document-idle
 // @version 		1004
-// @updateURL		file:///D:/wamp/www/_zdtone/gmbingxue/ManageWeixin/public/rrd_helper.user.js
-// @supportURL		http://www.baidu.com/
-// @homepage		file:///D:/wamp/www/_zdtone/gmbingxue/ManageWeixin/public/rrd_helper.user.js
+// @updateURL		https://raw.githubusercontent.com/wedv/php-tool/master/rrd_helper.user.js
+// @supportURL		https://github.com/wedv/php-tool
+// @homepage		https://github.com/wedv/php-tool
 // @contributionURL	https://me.alipay.com/
 // @contributionAmount	￥0.00
 // ==/UserScript==
