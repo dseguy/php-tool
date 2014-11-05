@@ -57,19 +57,12 @@ class Model_Common {
      * @param string $ticket 票据
      * @param int $gameID 游戏编号
      */
-    public function validateTicket($ticket, $gameid = 0, &$data) {
-
-
-
+    public function validateTicket($ticket, $gameid = 0, &$data = null) {
         $decodestr = self::packTicket($ticket);
 
         if (strlen($decodestr) > 0) {
             $decodearray = explode('**', $decodestr);
-
-
             if (count($decodearray) > 0 && $decodearray[2] > time()) {//票据在有效期范围内
-
-
                 $data = array(
                     //'user_name' => $decodearray[0],
                     'user_id' => $decodearray[1],
@@ -337,7 +330,7 @@ class Model_Common {
      * @param datetime $eTime
      * @return int
      */
-    public static function getTimeGroupCount($timeGroup = 'day', $sTime, $eTime) {
+    public static function getTimeGroupCount($timeGroup = 'day', $sTime = 0, $eTime = 0) {
         if ($timeGroup == 'weekth') {
             $count = Model_Common::getWeekCount(strtotime($sTime), strtotime($eTime));
         } else if ($timeGroup == 'month') {
@@ -358,7 +351,7 @@ class Model_Common {
      * @param int $pageSize
      * @return array    array('start'=>20140701, 'end'=>20140723)
      */
-    public static function getTimeGroup($timeGroup = 'day', $sTime, $eTime, $page, $pageSize) {
+    public static function getTimeGroup($timeGroup = 'day', $sTime = 0, $eTime = 0, $page = 0, $pageSize = 0) {
         $res = array('start' => 0, 'end' => 0);
         $sTime = strtotime($sTime);
         $eTime = strtotime($eTime);
